@@ -1,0 +1,3 @@
+# The SIGAP client and exposure code use only the Python standard library.
+# Pillow is optional and only needed for overlay images in tools/run_spike.py.
+Pillow>=10
