@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGAP-Banjir — Situation Room & AI Drone Rescue Dispatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --card-border: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --primary: #0284C7;
+      --primary-light: #E0F2FE;
+      --danger: #EF4444;
+      --danger-light: #FEE2E2;
+      --warning: #F59E0B;
+      --warning-light: #FEF3C7;
+      --success: #10B981;
+      --success-light: #D1FAE5;
+      --accent: #6366F1;
+      --accent-light: #EEF2FF;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Top Navigation Header */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--card-border);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #0284C7 0%, #2563EB 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+    }
+
+    .brand-text h1 {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0F172A;
+    }
+
+    .brand-text p {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .badge-meta {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-left: 6px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #F1F5F9;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: #0369A1;
+    }
+
+    .btn-outline {
+      background: white;
+      border-color: var(--card-border);
+      color: #334155;
+    }
+
+    .btn-outline:hover {
+      background: #F8FAFC;
+    }
+
+    /* Main Container */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Map / Aerial Viewport */
+    .viewport-panel {
+      position: relative;
+      background: #E2E8F0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .viewport-toolbar {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 5;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .layer-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .layer-toggle input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
+
+    .canvas-wrapper {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #0F172A;
+      overflow: auto;
+    }
+
+    /* Simulated Drone Aerial Canvas */
+    .aerial-canvas {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 60% 40%, #1e3a5f 0%, #0c1a2d 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* SVG Overlay Map */
+    .map-svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bbox-house {
+      fill: rgba(239, 68, 68, 0.25);
+      stroke: #EF4444;
+      stroke-width: 2.5;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .bbox-house:hover {
+      fill: rgba(239, 68, 68, 0.55);
+      stroke: #FFFFFF;
+      stroke-width: 3.5;
+    }
+
+    .bbox-house.moderate {
+      fill: rgba(245, 158, 11, 0.25);
+      stroke: #F59E0B;
+    }
+
+    .bbox-house.moderate:hover {
+      fill: rgba(245, 158, 11, 0.55);
+      stroke: #FFFFFF;
+    }
+
+    .flood-water {
+      fill: rgba(2, 132, 199, 0.45);
+      stroke: rgba(56, 189, 248, 0.8);
+      stroke-width: 1.5;
+      filter: drop-shadow(0 0 8px rgba(2, 132, 199, 0.3));
+    }
+
+    .cut-road {
+      stroke: #DC2626;
+      stroke-width: 5;
+      stroke-dasharray: 8 6;
+      fill: none;
+      filter: drop-shadow(0 0 4px rgba(220, 38, 38, 0.6));
+    }
+
+    /* Floating Legend */
+    .legend-overlay {
+      position: absolute;
+      bottom: 20px;
+      left: 16px;
+      z-index: 5;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .legend-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+
+    /* Right Sidebar (Sitrep & AI Dispatch) */
+    .sidebar {
+      background: var(--surface);
+      border-left: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .sidebar-section {
+      padding: 20px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .sidebar-section:last-child {
+      border-bottom: none;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0F172A;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Metric Stat Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      background: #F8FAFC;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-card.danger {
+      background: var(--danger-light);
+      border-color: #FECACA;
+    }
+
+    .stat-card.danger .stat-value {
+      color: var(--danger);
+    }
+
+    .stat-card.warning {
+      background: var(--warning-light);
+      border-color: #FDE68A;
+    }
+
+    .stat-card.warning .stat-value {
+      color: #D97706;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* AI Reasoning Box */
+    .reasoning-box {
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #1E293B;
+      position: relative;
+    }
+
+    .reasoning-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .spark-tag {
+      background: #4F46E5;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Action List */
+    .action-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .action-item {
+      background: #FFFFFF;
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .action-item:hover {
+      border-color: #94A3B8;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .action-item.priority-high {
+      border-left-color: var(--danger);
+      background: #FFFBFB;
+    }
+
+    .action-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-sector {
+      font-weight: 700;
+      font-size: 13px;
+      color: #0F172A;
+    }
+
+    .action-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .badge-high {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .badge-mid {
+      background: var(--warning-light);
+      color: #D97706;
+    }
+
+    .action-desc {
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .action-rec {
+      font-size: 11px;
+      color: var(--primary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Drone Pipeline Flow Modal / Strip */
+    .pipeline-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: #F1F5F9;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pipeline-step.active {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .step-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #CBD5E1;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .pipeline-step.active .step-num {
+      background: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">🌊</div>
+      <div class="brand-text">
+        <div style="display: flex; align-items: center;">
+          <h1>SIGAP-Banjir</h1>
+          <span class="badge-meta">Meta SAM 3.1 + Spark</span>
+        </div>
+        <p>Situation Room & Fast UAS/Drone Disaster Response Intelligence</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>NOAA / FloodNet Feed: Active</span>
+      </div>
+      <button class="btn btn-outline" onclick="loadSampleDataset()">📁 Ganti Citra UAS</button>
+      <button class="btn btn-primary" onclick="exportSitrep()">📄 Unduh Sitrep JSON</button>
+    </div>
+  </header>
+
+  <!-- Main Body -->
+  <div class="main-layout">
+    
+    <!-- Left: Drone Visualizer & AI Segment Layers -->
+    <div class="viewport-panel">
+      
+      <!-- Layer Toggle Bar -->
+      <div class="viewport-toolbar">
+        <span style="font-size: 12px; font-weight: 700; color: #0F172A; margin-right: 4px;">Layer Segmentasi:</span>
+        <label class="layer-toggle">
+          <input type="checkbox" id="layer-water" checked onchange="toggleLayer('water')"> Genangan Air Banjir
+        </label>
+        <label class="layer-toggle">
+          <input type="checkbox" id="layer-houses" checked onchange="toggleLayer('houses')"> Rumah Terisolasi / Terdampak
+        </label>
+        <label class="layer-toggle">
+          <input type="checkbox" id="layer-roads" checked onchange="toggleLayer('roads')"> Akses Jalan Terputus
+        </label>
+      </div>
+
+      <!-- Canvas / SVG Visualizer -->
+      <div class="canvas-wrapper">
+        <svg class="map-svg" viewBox="0 0 1000 700" id="floodMap">
+          <!-- Background Aerial Texture Simulated -->
+          <defs>
+            <linearGradient id="aerialGround" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#334155" />
+              <stop offset="50%" stop-color="#1E293B" />
+              <stop offset="100%" stop-color="#0F172A" />
+            </linearGradient>
+            <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+            </pattern>
+          </defs>
+          
+          <rect width="1000" height="700" fill="url(#aerialGround)"/>
+          <rect width="1000" height="700" fill="url(#gridPattern)"/>
+
+          <!-- River / Flood Body Segment (Meta SAM 3.1 Segment mask) -->
+          <g id="layer-water-group">
+            <path class="flood-water" d="M 0,220 Q 250,180 480,310 T 1000,280 L 1000,520 Q 750,560 520,440 T 0,480 Z" />
+            <path class="flood-water" d="M 650,450 Q 800,430 1000,560 L 1000,700 L 600,700 Z" opacity="0.6"/>
+          </g>
+
+          <!-- Main Roads (Grey) -->
+          <path d="M 180,0 L 220,700" stroke="#64748B" stroke-width="8" fill="none"/>
+          <path d="M 0,380 Q 500,360 1000,390" stroke="#64748B" stroke-width="10" fill="none"/>
+
+          <!-- Cut / Severed Road Segments (Red Dashed) -->
+          <g id="layer-roads-group">
+            <path class="cut-road" d="M 230,240 L 450,330" title="Jalan Raya Sektor B Terputus Arus Deras" />
+            <path class="cut-road" d="M 0,380 L 280,370" title="Akses Jembatan Barat Tenggelam" />
+          </g>
+
+          <!-- Detected Buildings (Bounding Boxes & Masks from SAM 3.1) -->
+          <g id="layer-houses-group">
+            <!-- Severe Isolated Cluster (Red) -->
+            <rect x="280" y="220" width="55" height="45" class="bbox-house" onclick="inspectHouse('H-01', 'Kritis', 'Kedalaman 1.8m, 5 Jiwa (2 Lansia)', 'Sektor B Barat')"/>
+            <text x="285" y="248" fill="#FFF" font-size="11" font-weight="700">H-01</text>
+
+            <rect x="360" y="250" width="60" height="50" class="bbox-house" onclick="inspectHouse('H-02', 'Kritis', 'Kedalaman 2.1m, Atap Rumah Terendam Sebagian', 'Sektor B Barat')"/>
+            <text x="365" y="280" fill="#FFF" font-size="11" font-weight="700">H-02</text>
+
+            <rect x="440" y="230" width="50" height="40" class="bbox-house" onclick="inspectHouse('H-03', 'Kritis', 'Terisolasi Total di Pusaran Arus', 'Sektor B Tengah')"/>
+            <text x="445" y="255" fill="#FFF" font-size="11" font-weight="700">H-03</text>
+
+            <rect x="310" y="320" width="65" height="50" class="bbox-house" onclick="inspectHouse('H-04', 'Kritis', 'Kedalaman 1.6m, Butuh Suplai Logistik Segera', 'Sektor B')"/>
+            <text x="315" y="350" fill="#FFF" font-size="11" font-weight="700">H-04</text>
+
+            <!-- Moderate Risk Cluster (Yellow/Amber) -->
+            <rect x="80" y="120" width="50" height="45" class="bbox-house moderate" onclick="inspectHouse('H-05', 'Sedang', 'Kedalaman 0.6m, Akses Darat Menipis', 'Sektor A')"/>
+            <text x="85" y="148" fill="#FFF" font-size="11" font-weight="700">H-05</text>
+
+            <rect x="150" y="100" width="55" height="40" class="bbox-house moderate" onclick="inspectHouse('H-06', 'Sedang', 'Kedalaman 0.5m, Genangan Air Memasuki Teras', 'Sektor A')"/>
+            <text x="155" y="125" fill="#FFF" font-size="11" font-weight="700">H-06</text>
+
+            <rect x="580" y="140" width="70" height="55" class="bbox-house moderate" onclick="inspectHouse('H-07', 'Sedang', 'Tepi Tanggul Kritis, Air Mengikis Pondasi', 'Sektor C')"/>
+            <text x="585" y="172" fill="#FFF" font-size="11" font-weight="700">H-07</text>
+
+            <rect x="670" y="180" width="60" height="50" class="bbox-house moderate" onclick="inspectHouse('H-08', 'Sedang', 'Lantai 1 Terendam 40cm', 'Sektor C')"/>
+            <text x="675" y="210" fill="#FFF" font-size="11" font-weight="700">H-08</text>
+
+            <rect x="750" y="380" width="80" height="60" class="bbox-house" onclick="inspectHouse('H-09', 'Kritis', 'Tersapu Banjir Bandang, Dekat Saluran Induk', 'Sektor D')"/>
+            <text x="755" y="415" fill="#FFF" font-size="11" font-weight="700">H-09</text>
+          </g>
+        </svg>
+
+        <!-- Legend -->
+        <div class="legend-overlay">
+          <div class="legend-item">
+            <div class="legend-color" style="background: rgba(239,68,68,0.8);"></div>
+            <span>Rumah Kritis Terisolir (92 terdeteksi)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: rgba(245,158,11,0.8);"></div>
+            <span>Waspada Genangan / Akses Rentan</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: rgba(2,132,199,0.7);"></div>
+            <span>Genangan Air Banjir (SAM 3.1 Mask)</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #DC2626; height: 3px;"></div>
+            <span>Akses Jalan Lumpuh / Terputus</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Situation Report & AI Dispatch Panel -->
+    <div class="sidebar">
+      
+      <!-- Key Statistics -->
+      <div class="sidebar-section">
+        <div class="section-title">
+          <span>Ringkasan Dampak Bencana</span>
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Realtime Ingest</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card danger">
+            <span class="stat-label">Rumah Terendam Kritis</span>
+            <span class="stat-value">92</span>
+          </div>
+          <div class="stat-card warning">
+            <span class="stat-label">Jalan Lumpuh Total</span>
+            <span class="stat-value">2 Titik</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Luas Genangan Banjir</span>
+            <span class="stat-value">14.8 Ha</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Estimasi Korban Terdampak</span>
+            <span class="stat-value">~380 Jiwa</span>
+          </div>
+        </div>
+
+        <div class="pipeline-strip">
+          <div class="pipeline-step active">
+            <span class="step-num">1</span>
+            <span>Drone UAS</span>
+          </div>
+          <span>➔</span>
+          <div class="pipeline-step active">
+            <span class="step-num">2</span>
+            <span>SAM 3.1</span>
+          </div>
+          <span>➔</span>
+          <div class="pipeline-step active">
+            <span class="step-num">3</span>
+            <span>Spark Sitrep</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Spark Reasoning Section -->
+      <div class="sidebar-section">
+        <div class="section-title">
+          <span>Analisis Muse Spark & Prioritas SAR</span>
+          <span class="spark-tag">Llama 3.1 / Spark</span>
+        </div>
+        <div class="reasoning-box">
+          <div class="reasoning-header">
+            <span>⚡ Rekomendasi Taktis BPBD / Basarnas:</span>
+          </div>
+          <p>
+            Berdasarkan overlay segmentasi <strong>Meta SAM 3.1</strong> terhadap citra drone NOAA/FloodNet:
+            Arus deras mengisolasi <strong>Klaster Sektor B (H-01 s/d H-04)</strong> akibat putusnya jembatan penghubung barat. Akses darat tidak dapat dilalui kendaraan roda 4.
+          </p>
+          <p style="margin-top: 8px;">
+            <strong>Tindakan Wajib Cepat:</strong> Kerahkan 2 unit perahu LCR bermesin dari Dermaga Sektor A menuju Sektor B untuk evakuasi prioritas balita dan lansia sebelum elevasi air naik 15cm.
+          </p>
+        </div>
+      </div>
+
+      <!-- Priority Action List -->
+      <div class="sidebar-section" style="flex: 1;">
+        <div class="section-title">
+          <span>Rencana Evakuasi Per Sektor</span>
+        </div>
+        <div class="action-list">
+          
+          <div class="action-item priority-high">
+            <div class="action-header">
+              <span class="action-sector">Sektor B — Klaster Terisolir Barat</span>
+              <span class="action-badge badge-high">Prioritas 1</span>
+            </div>
+            <p class="action-desc">4 Unit Rumah (H-01 s/d H-04) terendam >1.8m. Jalan akses terputus arus deras.</p>
+            <div class="action-rec">
+              <span>🚤 Deploy: 2 Perahu Karet LCR + Paket Medis Darurat</span>
+            </div>
+          </div>
+
+          <div class="action-item priority-high">
+            <div class="action-header">
+              <span class="action-sector">Sektor D — Saluran Primer Luapan</span>
+              <span class="action-badge badge-high">Prioritas 2</span>
+            </div>
+            <p class="action-desc">Rumah H-09 berada di radius 20 meter dari bibir tanggul retak.</p>
+            <div class="action-rec">
+              <span>⚠️ Peringatan Sirine Evakuasi Mandiri ke Titik Kumpul C</span>
+            </div>
+          </div>
+
+          <div class="action-item">
+            <div class="action-header">
+              <span class="action-sector">Sektor A — Buffer Zone Barat</span>
+              <span class="action-badge badge-mid">Siaga 2</span>
+            </div>
+            <p class="action-desc">Genangan 40-60cm, akses evakuasi darat masih dapat dilalui truk unimog.</p>
+            <div class="action-rec">
+              <span>🚛 Siagakan Truk Evakuasi & Dapur Umum</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    function toggleLayer(layerName) {
+      const el = document.getElementById(`layer-${layerName}-group`);
+      const cb = document.getElementById(`layer-${layerName}`);
+      if (el) {
+        el.style.display = cb.checked ? 'block' : 'none';
+      }
+    }
+
+    function inspectHouse(id, status, detail, sector) {
+      alert(`[DETAIL OBJEK DETEKSI SAM 3.1]\n\nID: ${id}\nSektor: ${sector}\nStatus: ${status}\nKondisi: ${detail}\n\nRekomendasi Aksi: Segera prioritaskan evakuasi warga via tim respon terdekat.`);
+    }
+
+    function exportSitrep() {
+      const sitrepData = {
+        project: "SIGAP-Banjir",
+        engine: "Meta SAM 3.1 (Segment Anything) + Muse Spark Reasoning",
+        generatedAt: new Date().toISOString(),
+        summary: {
+          buildings_detected: 92,
+          severe_submerged: 14,
+          roads_severed: 2,
+          flood_area_hectares: 14.8
+        },
+        priority_actions: [
+          { sector: "B", priority: 1, action: "Deploy 2 Perahu LCR ke Klaster H-01-H-04" },
+          { sector: "D", priority: 2, action: "Evakuasi darurat radius tanggul primer" }
+        ]
+      };
+      const blob = new Blob([JSON.stringify(sitrepData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `SIGAP_Banjir_Sitrep_${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function loadSampleDataset() {
+      alert("Dataset Sampel NOAA / FloodNet terhubung aktif. Silakan pilih titik koordinat penerbangan drone.");
+    }
+  </script>
+</body>
+</html>
