@@ -1,3 +1,5 @@
-# The SIGAP client and exposure code use only the Python standard library.
-# Pillow is optional and only needed for overlay images in tools/run_spike.py.
+# meta-sam-parser is Meta's official parser for SAM 3.1 output; the mask
+# decoder in src/sigap/sam_client.py builds on it.
+meta-sam-parser
+# Pillow is used for overlay images in the tools and analysis scripts.
 Pillow>=10

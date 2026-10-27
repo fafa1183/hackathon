@@ -83,7 +83,11 @@ def parse_output_text(text: str) -> list[Segment]:
             frame_w=int(w), frame_h=int(h),
             confidence=float(conf) if conf else None,
         )
-        following = [m for m in masks if m.start() > match.end()]
+        # The mask token starts exactly where the box token ends (the two
+        # tokens are adjacent inside a record), so the comparison must be
+        # >=, not >. A strict > silently pairs every box with the NEXT
+        # record's mask.
+        following = [m for m in masks if m.start() >= match.end()]
         if following:
             mh, mw, enc, payload = following[0].groups()
             segment.mask_h, segment.mask_w = int(mh), int(mw)
@@ -91,6 +95,29 @@ def parse_output_text(text: str) -> list[Segment]:
             segment.mask_payload = payload
         segments.append(segment)
     return segments
+
+
+def decode_raster(segment: "Segment") -> bytes:
+    """Decode a segment's mask payload into a row-major 0/1 raster.
+
+    Uses Meta's official parser package (meta-sam-parser); the wire
+    payload handed to it must include the encoding marker as its first
+    character. The raster has mask_h rows and mask_w columns, and in
+    every response observed so far its size equals the inclusive box
+    size, so it maps 1:1 onto the box at (x1, y1).
+    """
+    if segment.mask_payload is None or segment.mask_encoding is None:
+        raise ValueError("segment has no mask payload")
+    from meta_sam_parser import SegmentationMask, decode_mask_to_raster
+
+    encoding = "lossless" if segment.mask_encoding == "~" else "one_bit"
+    mask = SegmentationMask(
+        height=segment.mask_h,
+        width=segment.mask_w,
+        encoding=encoding,
+        payload=segment.mask_encoding + segment.mask_payload,
+    )
+    return decode_mask_to_raster(mask)
 
 
 def segment_image(prompt: str, image_url: str, api_key: str | None = None,

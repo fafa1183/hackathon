@@ -61,7 +61,8 @@ PNG with the detected boxes drawn on the source image.
 
 ## Roadmap to submission (freeze: evening of 4 Nov 2026)
 
-- [ ] Mask decoding (base85 payloads) and true mask-intersection counts
+- [x] Mask decoding via Meta's official parser, contact-based exposure
+      metric, and baseline (before-image) subtraction of permanent water
 - [ ] FloodNet subset wired in, scores against its ground-truth labels
 - [ ] Muse Spark situation-report agent (JSON schema + narrative)
 - [ ] Situation dashboard (map overlay + priority panel)
