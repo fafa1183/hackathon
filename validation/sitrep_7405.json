@@ -1,0 +1,12 @@
+{
+  "ringkasan": "Terdeteksi 19 rumah di area 7405 dengan genangan air baru seluas 2050980 piksel yang meluas di jalan pemukiman dan pekarangan serta mengisolasi sejumlah bangunan di sektor barat laut. Sebanyak 3 rumah bersentuhan langsung dengan genangan dan membutuhkan perhatian pertama, sementara 2 segmen jalan utama teridentifikasi tergenang.",
+  "rumah_terdeteksi": 19,
+  "rumah_terdampak_prioritas": 3,
+  "area_air_baru_piksel": 2050980,
+  "prioritas": [
+    "Prioritaskan pemeriksaan dan evakuasi 3 rumah dengan kontak genangan tertinggi",
+    "Periksa dan amankan 2 segmen jalan utama yang tergenang untuk memastikan jalur evakuasi",
+    "Kirim tim kaji cepat ke sektor barat laut untuk memverifikasi kondisi penghuni dan kebutuhan mendesak"
+  ],
+  "catatan_ketidakpastian": "Data citra ini belum dapat menunjukkan kedalaman air, kerusakan bangunan, maupun jumlah dan kondisi warga di dalam rumah."
+}

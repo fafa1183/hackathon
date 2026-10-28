@@ -1,0 +1,83 @@
+{
+  "location": "FloodNet Scene 7405 (Post-Harvey UAS Aerial Survey)",
+  "image_width": 4592,
+  "image_height": 3072,
+  "houses_detected": 19,
+  "new_water_px": 2050980,
+  "priority_houses": [
+    {
+      "box": [
+        3960,
+        1278,
+        4575,
+        1969
+      ],
+      "water_contact": 0.0708
+    },
+    {
+      "box": [
+        1561,
+        1349,
+        2314,
+        2035
+      ],
+      "water_contact": 0.1183
+    },
+    {
+      "box": [
+        2036,
+        1012,
+        2745,
+        1660
+      ],
+      "water_contact": 0.0617
+    },
+    {
+      "box": [
+        2123,
+        2646,
+        2816,
+        3071
+      ],
+      "water_contact": 0.1077
+    },
+    {
+      "box": [
+        2548,
+        648,
+        3216,
+        1290
+      ],
+      "water_contact": 0.0813
+    },
+    {
+      "box": [
+        3076,
+        252,
+        3736,
+        877
+      ],
+      "water_contact": 0.0767
+    },
+    {
+      "box": [
+        3246,
+        1758,
+        3828,
+        2404
+      ],
+      "water_contact": 0.0461
+    },
+    {
+      "box": [
+        2131,
+        745,
+        2479,
+        1089
+      ],
+      "water_contact": 0.1807
+    }
+  ],
+  "road_segments": 2,
+  "new_water_notes": "Genangan air meluas di jalan pemukiman dan pekarangan, mengisolasi sejumlah bangunan di sektor barat laut."
+}
