@@ -107,6 +107,36 @@
       gap: 12px;
     }
 
+    .dataset-select-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #F1F5F9;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+    }
+
+    .dataset-select-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .dataset-select {
+      background: white;
+      border: 1px solid #CBD5E1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      outline: none;
+    }
+
     .status-pill {
       display: flex;
       align-items: center;
@@ -125,6 +155,29 @@
       border-radius: 50%;
       background: var(--success);
       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+
+    .data-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .data-badge.real {
+      background: #DCFCE7;
+      color: #15803D;
+      border: 1px solid #86EFAC;
+    }
+
+    .data-badge.fallback {
+      background: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #FCD34D;
     }
 
     .btn {
@@ -163,7 +216,7 @@
     /* Main Container */
     .main-layout {
       display: grid;
-      grid-template-columns: 1fr 420px;
+      grid-template-columns: 1fr 440px;
       flex: 1;
       overflow: hidden;
     }
@@ -318,18 +371,14 @@
     }
 
     .sidebar-section {
-      padding: 20px;
+      padding: 18px 20px;
       border-bottom: 1px solid var(--card-border);
     }
 
-    .sidebar-section:last-child {
-      border-bottom: none;
-    }
-
     .section-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      color: #0F172A;
+      color: var(--text-main);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 12px;
@@ -338,12 +387,20 @@
       justify-content: space-between;
     }
 
-    /* Metric Stat Grid */
+    .spark-tag {
+      font-size: 10px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    /* Key Statistics Grid */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 16px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
     .stat-card {
@@ -362,7 +419,7 @@
     }
 
     .stat-card.danger .stat-value {
-      color: var(--danger);
+      color: #DC2626;
     }
 
     .stat-card.warning {
@@ -378,7 +435,6 @@
       font-size: 11px;
       font-weight: 600;
       color: var(--text-muted);
-      text-transform: uppercase;
     }
 
     .stat-value {
@@ -388,39 +444,38 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* AI Reasoning Box */
+    /* Reasoning Box */
     .reasoning-box {
       background: #F8FAFC;
-      border: 1px solid #CBD5E1;
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 12px;
-      line-height: 1.6;
-      color: #1E293B;
-      position: relative;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #334155;
     }
 
     .reasoning-header {
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 8px;
-      font-size: 12px;
+      gap: 6px;
     }
 
-    .spark-tag {
-      background: #4F46E5;
-      color: white;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
+    .uncertainty-note {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: #F1F5F9;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #64748B;
+      font-style: italic;
+      border: 1px dashed #CBD5E1;
     }
 
-    /* Action List */
+    /* Priority Action Items */
     .action-list {
       display: flex;
       flex-direction: column;
@@ -430,35 +485,26 @@
     .action-item {
       background: #FFFFFF;
       border: 1px solid var(--card-border);
-      border-left: 4px solid var(--primary);
       border-radius: 8px;
       padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-
-    .action-item:hover {
-      border-color: #94A3B8;
       box-shadow: var(--shadow-sm);
     }
 
     .action-item.priority-high {
-      border-left-color: var(--danger);
-      background: #FFFBFB;
+      border-left: 4px solid var(--danger);
     }
 
     .action-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 6px;
     }
 
     .action-sector {
       font-weight: 700;
       font-size: 13px;
-      color: #0F172A;
+      color: var(--text-main);
     }
 
     .action-badge {
@@ -476,24 +522,28 @@
 
     .badge-mid {
       background: var(--warning-light);
-      color: #D97706;
+      color: #B45309;
     }
 
     .action-desc {
       font-size: 12px;
-      color: #475569;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 8px;
     }
 
     .action-rec {
-      font-size: 11px;
-      color: var(--primary);
-      font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #0369A1;
+      background: var(--primary-light);
+      padding: 6px 10px;
+      border-radius: 6px;
     }
 
-    /* Drone Pipeline Flow Modal / Strip */
     .pipeline-strip {
       display: flex;
       align-items: center;
@@ -550,11 +600,16 @@
       </div>
     </div>
     <div class="header-actions">
-      <div class="status-pill">
-        <span class="status-dot"></span>
-        <span>NOAA / FloodNet Feed: Active</span>
+      <div class="dataset-select-wrapper">
+        <span class="dataset-select-label">Dataset:</span>
+        <select class="dataset-select" id="datasetSelector" onchange="switchDataset(this.value)">
+          <option value="real_7405" selected>FloodNet 7405 (Data Nyata Pipeline)</option>
+          <option value="sample_noaa">NOAA West Houston (Data Contoh Fallback)</option>
+        </select>
       </div>
-      <button class="btn btn-outline" onclick="loadSampleDataset()">📁 Ganti Citra UAS</button>
+      <div id="datasetBadgeContainer">
+        <span class="data-badge real" id="currentDataBadge">● Data Nyata (FloodNet)</span>
+      </div>
       <button class="btn btn-primary" onclick="exportSitrep()">📄 Unduh Sitrep JSON</button>
     </div>
   </header>
@@ -572,7 +627,7 @@
           <input type="checkbox" id="layer-water" checked onchange="toggleLayer('water')"> Genangan Air Banjir
         </label>
         <label class="layer-toggle">
-          <input type="checkbox" id="layer-houses" checked onchange="toggleLayer('houses')"> Rumah Terisolasi / Terdampak
+          <input type="checkbox" id="layer-houses" checked onchange="toggleLayer('houses')"> Bangunan / Rumah Terdampak
         </label>
         <label class="layer-toggle">
           <input type="checkbox" id="layer-roads" checked onchange="toggleLayer('roads')"> Akses Jalan Terputus
@@ -599,50 +654,22 @@
 
           <!-- River / Flood Body Segment (Meta SAM 3.1 Segment mask) -->
           <g id="layer-water-group">
-            <path class="flood-water" d="M 0,220 Q 250,180 480,310 T 1000,280 L 1000,520 Q 750,560 520,440 T 0,480 Z" />
-            <path class="flood-water" d="M 650,450 Q 800,430 1000,560 L 1000,700 L 600,700 Z" opacity="0.6"/>
+            <!-- Dynamic path filled by JS -->
           </g>
 
           <!-- Main Roads (Grey) -->
-          <path d="M 180,0 L 220,700" stroke="#64748B" stroke-width="8" fill="none"/>
-          <path d="M 0,380 Q 500,360 1000,390" stroke="#64748B" stroke-width="10" fill="none"/>
+          <g id="base-roads-group">
+            <!-- Dynamic roads filled by JS -->
+          </g>
 
           <!-- Cut / Severed Road Segments (Red Dashed) -->
           <g id="layer-roads-group">
-            <path class="cut-road" d="M 230,240 L 450,330" title="Jalan Raya Sektor B Terputus Arus Deras" />
-            <path class="cut-road" d="M 0,380 L 280,370" title="Akses Jembatan Barat Tenggelam" />
+            <!-- Dynamic cut roads filled by JS -->
           </g>
 
           <!-- Detected Buildings (Bounding Boxes & Masks from SAM 3.1) -->
           <g id="layer-houses-group">
-            <!-- Severe Isolated Cluster (Red) -->
-            <rect x="280" y="220" width="55" height="45" class="bbox-house" onclick="inspectHouse('H-01', 'Kritis', 'Kedalaman 1.8m, 5 Jiwa (2 Lansia)', 'Sektor B Barat')"/>
-            <text x="285" y="248" fill="#FFF" font-size="11" font-weight="700">H-01</text>
-
-            <rect x="360" y="250" width="60" height="50" class="bbox-house" onclick="inspectHouse('H-02', 'Kritis', 'Kedalaman 2.1m, Atap Rumah Terendam Sebagian', 'Sektor B Barat')"/>
-            <text x="365" y="280" fill="#FFF" font-size="11" font-weight="700">H-02</text>
-
-            <rect x="440" y="230" width="50" height="40" class="bbox-house" onclick="inspectHouse('H-03', 'Kritis', 'Terisolasi Total di Pusaran Arus', 'Sektor B Tengah')"/>
-            <text x="445" y="255" fill="#FFF" font-size="11" font-weight="700">H-03</text>
-
-            <rect x="310" y="320" width="65" height="50" class="bbox-house" onclick="inspectHouse('H-04', 'Kritis', 'Kedalaman 1.6m, Butuh Suplai Logistik Segera', 'Sektor B')"/>
-            <text x="315" y="350" fill="#FFF" font-size="11" font-weight="700">H-04</text>
-
-            <!-- Moderate Risk Cluster (Yellow/Amber) -->
-            <rect x="80" y="120" width="50" height="45" class="bbox-house moderate" onclick="inspectHouse('H-05', 'Sedang', 'Kedalaman 0.6m, Akses Darat Menipis', 'Sektor A')"/>
-            <text x="85" y="148" fill="#FFF" font-size="11" font-weight="700">H-05</text>
-
-            <rect x="150" y="100" width="55" height="40" class="bbox-house moderate" onclick="inspectHouse('H-06', 'Sedang', 'Kedalaman 0.5m, Genangan Air Memasuki Teras', 'Sektor A')"/>
-            <text x="155" y="125" fill="#FFF" font-size="11" font-weight="700">H-06</text>
-
-            <rect x="580" y="140" width="70" height="55" class="bbox-house moderate" onclick="inspectHouse('H-07', 'Sedang', 'Tepi Tanggul Kritis, Air Mengikis Pondasi', 'Sektor C')"/>
-            <text x="585" y="172" fill="#FFF" font-size="11" font-weight="700">H-07</text>
-
-            <rect x="670" y="180" width="60" height="50" class="bbox-house moderate" onclick="inspectHouse('H-08', 'Sedang', 'Lantai 1 Terendam 40cm', 'Sektor C')"/>
-            <text x="675" y="210" fill="#FFF" font-size="11" font-weight="700">H-08</text>
-
-            <rect x="750" y="380" width="80" height="60" class="bbox-house" onclick="inspectHouse('H-09', 'Kritis', 'Tersapu Banjir Bandang, Dekat Saluran Induk', 'Sektor D')"/>
-            <text x="755" y="415" fill="#FFF" font-size="11" font-weight="700">H-09</text>
+            <!-- Dynamic house rects filled by JS -->
           </g>
         </svg>
 
@@ -650,7 +677,7 @@
         <div class="legend-overlay">
           <div class="legend-item">
             <div class="legend-color" style="background: rgba(239,68,68,0.8);"></div>
-            <span>Rumah Kritis Terisolir (92 terdeteksi)</span>
+            <span id="legendPriorityText">Rumah Prioritas Kontak Air</span>
           </div>
           <div class="legend-item">
             <div class="legend-color" style="background: rgba(245,158,11,0.8);"></div>
@@ -662,7 +689,7 @@
           </div>
           <div class="legend-item">
             <div class="legend-color" style="background: #DC2626; height: 3px;"></div>
-            <span>Akses Jalan Lumpuh / Terputus</span>
+            <span>Akses Jalan Terputus / Lumpuh</span>
           </div>
         </div>
       </div>
@@ -675,24 +702,24 @@
       <div class="sidebar-section">
         <div class="section-title">
           <span>Ringkasan Dampak Bencana</span>
-          <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Realtime Ingest</span>
+          <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;" id="feedSourceLabel">Realtime Ingest</span>
         </div>
         <div class="stats-grid">
           <div class="stat-card danger">
-            <span class="stat-label">Rumah Terendam Kritis</span>
-            <span class="stat-value">92</span>
+            <span class="stat-label">Prioritas Kontak Air</span>
+            <span class="stat-value" id="statPriorityHouses">3</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Total Rumah Terdeteksi</span>
+            <span class="stat-value" id="statTotalHouses">19</span>
           </div>
           <div class="stat-card warning">
-            <span class="stat-label">Jalan Lumpuh Total</span>
-            <span class="stat-value">2 Titik</span>
+            <span class="stat-label">Jalan Lumpuh / Tergenang</span>
+            <span class="stat-value" id="statCutRoads">2 Segmen</span>
           </div>
           <div class="stat-card">
-            <span class="stat-label">Luas Genangan Banjir</span>
-            <span class="stat-value">14.8 Ha</span>
-          </div>
-          <div class="stat-card">
-            <span class="stat-label">Estimasi Korban Terdampak</span>
-            <span class="stat-value">~380 Jiwa</span>
+            <span class="stat-label">Genangan Air Baru</span>
+            <span class="stat-value" id="statWaterArea">2.05M px</span>
           </div>
         </div>
 
@@ -722,58 +749,24 @@
         </div>
         <div class="reasoning-box">
           <div class="reasoning-header">
-            <span>⚡ Rekomendasi Taktis BPBD / Basarnas:</span>
+            <span>⚡ Rekomendasi Taktis Respon Cepat:</span>
           </div>
-          <p>
-            Berdasarkan overlay segmentasi <strong>Meta SAM 3.1</strong> terhadap citra drone NOAA/FloodNet:
-            Arus deras mengisolasi <strong>Klaster Sektor B (H-01 s/d H-04)</strong> akibat putusnya jembatan penghubung barat. Akses darat tidak dapat dilalui kendaraan roda 4.
+          <p id="sitrepSummaryText">
+            Terdeteksi 19 rumah di area 7405 dengan genangan air baru seluas 2050980 piksel yang meluas di jalan pemukiman dan pekarangan serta mengisolasi sejumlah bangunan di sektor barat laut. Sebanyak 3 rumah bersentuhan langsung dengan genangan dan membutuhkan perhatian pertama, sementara 2 segmen jalan utama teridentifikasi tergenang.
           </p>
-          <p style="margin-top: 8px;">
-            <strong>Tindakan Wajib Cepat:</strong> Kerahkan 2 unit perahu LCR bermesin dari Dermaga Sektor A menuju Sektor B untuk evakuasi prioritas balita dan lansia sebelum elevasi air naik 15cm.
-          </p>
+          <div class="uncertainty-note" id="sitrepUncertaintyText">
+            Catatan: Data citra ini belum dapat menunjukkan kedalaman air, kerusakan bangunan, maupun jumlah dan kondisi warga di dalam rumah.
+          </div>
         </div>
       </div>
 
       <!-- Priority Action List -->
       <div class="sidebar-section" style="flex: 1;">
         <div class="section-title">
-          <span>Rencana Evakuasi Per Sektor</span>
+          <span>Prioritas Rencana Operasional</span>
         </div>
-        <div class="action-list">
-          
-          <div class="action-item priority-high">
-            <div class="action-header">
-              <span class="action-sector">Sektor B — Klaster Terisolir Barat</span>
-              <span class="action-badge badge-high">Prioritas 1</span>
-            </div>
-            <p class="action-desc">4 Unit Rumah (H-01 s/d H-04) terendam >1.8m. Jalan akses terputus arus deras.</p>
-            <div class="action-rec">
-              <span>🚤 Deploy: 2 Perahu Karet LCR + Paket Medis Darurat</span>
-            </div>
-          </div>
-
-          <div class="action-item priority-high">
-            <div class="action-header">
-              <span class="action-sector">Sektor D — Saluran Primer Luapan</span>
-              <span class="action-badge badge-high">Prioritas 2</span>
-            </div>
-            <p class="action-desc">Rumah H-09 berada di radius 20 meter dari bibir tanggul retak.</p>
-            <div class="action-rec">
-              <span>⚠️ Peringatan Sirine Evakuasi Mandiri ke Titik Kumpul C</span>
-            </div>
-          </div>
-
-          <div class="action-item">
-            <div class="action-header">
-              <span class="action-sector">Sektor A — Buffer Zone Barat</span>
-              <span class="action-badge badge-mid">Siaga 2</span>
-            </div>
-            <p class="action-desc">Genangan 40-60cm, akses evakuasi darat masih dapat dilalui truk unimog.</p>
-            <div class="action-rec">
-              <span>🚛 Siagakan Truk Evakuasi & Dapur Umum</span>
-            </div>
-          </div>
-
+        <div class="action-list" id="priorityActionList">
+          <!-- Dynamic action items filled by JS -->
         </div>
       </div>
 
@@ -782,6 +775,197 @@
   </div>
 
   <script>
+    // DATASET 1: DATA NYATA (FloodNet Scene 7405) - Berasal dari validation/sitrep_7405.json & measurements_7405.json
+    const DATASET_REAL_7405 = {
+      id: "real_7405",
+      name: "FloodNet Scene 7405 (Post-Harvey UAS Aerial Survey)",
+      badgeText: "● Data Nyata (FloodNet 7405)",
+      badgeClass: "real",
+      stats: {
+        priorityHouses: "3",
+        totalHouses: "19",
+        cutRoads: "2 Segmen",
+        waterArea: "2.05M px"
+      },
+      summary: "Terdeteksi 19 rumah di area 7405 dengan genangan air baru seluas 2050980 piksel yang meluas di jalan pemukiman dan pekarangan serta mengisolasi sejumlah bangunan di sektor barat laut. Sebanyak 3 rumah bersentuhan langsung dengan genangan dan membutuhkan perhatian pertama, sementara 2 segmen jalan utama teridentifikasi tergenang.",
+      uncertainty: "Data citra ini belum dapat menunjukkan kedalaman air, kerusakan bangunan, maupun jumlah dan kondisi warga di dalam rumah.",
+      priorities: [
+        {
+          title: "Prioritas 1: Evakuasi Rumah Kontak Tertinggi",
+          desc: "Pemeriksaan dan evakuasi 3 rumah dengan kontak genangan tertinggi (kontak air s/d 18.0%).",
+          rec: "🚤 Kerahkan perahu perintis ke sektor barat laut"
+        },
+        {
+          title: "Prioritas 2: Amankan Jalur Logistik & Evakuasi",
+          desc: "Periksa dan amankan 2 segmen jalan utama yang tergenang untuk memastikan koridor evakuasi.",
+          rec: "🚧 Pasang rambu pembatas & siagakan kendaraan amfibi"
+        },
+        {
+          title: "Prioritas 3: Tim Kaji Cepat",
+          desc: "Kirim tim kaji cepat ke sektor barat laut untuk memverifikasi kondisi penghuni dan kebutuhan mendesak.",
+          rec: "📡 Verifikasi darat & pendataan logistik darurat"
+        }
+      ],
+      // Koordinat viewBox 1000x700 hasil konversi citra 4592x3072
+      waterPaths: `
+        <path class="flood-water" d="M 0,150 Q 280,110 520,240 T 1000,210 L 1000,450 Q 720,490 480,380 T 0,420 Z" />
+        <path class="flood-water" d="M 220,500 Q 450,420 750,560 L 750,680 L 180,680 Z" opacity="0.75" />
+      `,
+      baseRoads: `
+        <path d="M 120,0 L 160,700" stroke="#64748B" stroke-width="8" fill="none"/>
+        <path d="M 0,340 Q 500,320 1000,350" stroke="#64748B" stroke-width="9" fill="none"/>
+      `,
+      cutRoads: `
+        <path class="cut-road" d="M 140,260 L 380,330" title="Segmen Jalan Barat Terendam Air" />
+        <path class="cut-road" d="M 0,340 L 220,335" title="Akses Penghubung Pemukiman Terputus" />
+      `,
+      houses: [
+        // Bounding boxes dari measurements_7405.json (scaled to 1000x700)
+        { id: "H-01", x: 162, y: 170, w: 79, h: 78, contact: "18.1%", prio: true, note: "Kontak genangan 18.1% (Tertinggi) - Sektor Barat Laut" },
+        { id: "H-02", x: 340, y: 308, w: 164, h: 156, contact: "11.8%", prio: true, note: "Kontak genangan 11.8% - Akses terputus genangan" },
+        { id: "H-03", x: 577, y: 604, w: 151, h: 97, contact: "10.8%", prio: true, note: "Kontak genangan 10.8% - Pekarangan tergenang total" },
+        { id: "H-04", x: 141, y: 147, w: 145, h: 146, contact: "8.1%", prio: false, note: "Kontak genangan 8.1% - Tepi lintasan air" },
+        { id: "H-05", x: 555, y: 57, w: 144, h: 142, contact: "7.7%", prio: false, note: "Kontak genangan 7.7% - Air menyentuh pondasi timur" },
+        { id: "H-06", x: 862, y: 291, w: 134, h: 158, contact: "7.1%", prio: false, note: "Kontak genangan 7.1% - Sektor Timur" },
+        { id: "H-07", x: 220, y: 231, w: 154, h: 148, contact: "6.2%", prio: false, note: "Kontak genangan 6.2% - Akses jalan rentan" },
+        { id: "H-08", x: 707, y: 401, w: 127, h: 147, contact: "4.6%", prio: false, note: "Kontak genangan 4.6% - Waspada rembesan" },
+        { id: "H-09", x: 40, y: 80, w: 70, h: 60, contact: "0.0%", prio: false, note: "Dataran lebih tinggi - Aman terkendali" },
+        { id: "H-10", x: 820, y: 80, w: 80, h: 70, contact: "0.0%", prio: false, note: "Sektor Utara Timur - Kering" }
+      ]
+    };
+
+    // DATASET 2: DATA CONTOH FALLBACK (NOAA West Houston Synthetic Fallback)
+    const DATASET_SAMPLE_NOAA = {
+      id: "sample_noaa",
+      name: "NOAA West Houston Hurricane Harvey (Data Contoh Fallback)",
+      badgeText: "⚠ Data Contoh (NOAA Synthetic Fallback)",
+      badgeClass: "fallback",
+      stats: {
+        priorityHouses: "14",
+        totalHouses: "92",
+        cutRoads: "2 Titik",
+        waterArea: "14.8 Ha"
+      },
+      summary: "Data Contoh Sintetis (NOAA): Arus banjir menggenangi wilayah perumahan West Houston. Teridentifikasi 92 bangunan potensial terisolir dengan klaster evakuasi kritis di sekitar bantaran sungai.",
+      uncertainty: "Data ini adalah simulasi awal untuk demonstrasi visualisasi dan bukan hasil inferensi resmi.",
+      priorities: [
+        {
+          title: "Prioritas 1: Klaster Sektor B (H-01 s/d H-04)",
+          desc: "4 unit rumah terendam >1.8m akibat putusnya akses jembatan penghubung barat.",
+          rec: "🚤 Deploy 2 unit perahu LCR bermesin"
+        },
+        {
+          title: "Prioritas 2: Radius Tanggul Retak Sektor D",
+          desc: "Rumah H-09 berada di radius 20 meter dari saluran luapan primer.",
+          rec: "⚠️ Peringatan sirine evakuasi mandiri"
+        }
+      ],
+      waterPaths: `
+        <path class="flood-water" d="M 0,220 Q 250,180 480,310 T 1000,280 L 1000,520 Q 750,560 520,440 T 0,480 Z" />
+        <path class="flood-water" d="M 650,450 Q 800,430 1000,560 L 1000,700 L 600,700 Z" opacity="0.6"/>
+      `,
+      baseRoads: `
+        <path d="M 180,0 L 220,700" stroke="#64748B" stroke-width="8" fill="none"/>
+        <path d="M 0,380 Q 500,360 1000,390" stroke="#64748B" stroke-width="10" fill="none"/>
+      `,
+      cutRoads: `
+        <path class="cut-road" d="M 230,240 L 450,330" title="Jalan Raya Sektor B Terputus Arus Deras" />
+        <path class="cut-road" d="M 0,380 L 280,370" title="Akses Jembatan Barat Tenggelam" />
+      `,
+      houses: [
+        { id: "H-01", x: 280, y: 220, w: 55, h: 45, contact: "Kritis", prio: true, note: "Kedalaman 1.8m, 5 Jiwa - Sektor B Barat" },
+        { id: "H-02", x: 360, y: 250, w: 60, h: 50, contact: "Kritis", prio: true, note: "Kedalaman 2.1m, Atap terendam sebagian" },
+        { id: "H-03", x: 440, y: 230, w: 50, h: 40, contact: "Kritis", prio: true, note: "Terisolasi total di pusaran arus" },
+        { id: "H-04", x: 310, y: 320, w: 65, h: 50, contact: "Kritis", prio: true, note: "Kedalaman 1.6m, butuh logistik darurat" },
+        { id: "H-05", x: 80, y: 120, w: 50, h: 45, contact: "Sedang", prio: false, note: "Kedalaman 0.6m, akses darat menipis" },
+        { id: "H-06", x: 150, y: 100, w: 55, h: 40, contact: "Sedang", prio: false, note: "Kedalaman 0.5m, genangan memasuki teras" }
+      ]
+    };
+
+    let currentDataset = DATASET_REAL_7405;
+
+    function renderDashboard(dataset) {
+      currentDataset = dataset;
+
+      // Update Badges & Labels
+      const badge = document.getElementById("currentDataBadge");
+      badge.textContent = dataset.badgeText;
+      badge.className = `data-badge ${dataset.badgeClass}`;
+
+      document.getElementById("feedSourceLabel").textContent = dataset.name;
+
+      // Update Stats
+      document.getElementById("statPriorityHouses").textContent = dataset.stats.priorityHouses;
+      document.getElementById("statTotalHouses").textContent = dataset.stats.totalHouses;
+      document.getElementById("statCutRoads").textContent = dataset.stats.cutRoads;
+      document.getElementById("statWaterArea").textContent = dataset.stats.waterArea;
+
+      // Update Reasoning & Sitrep text
+      document.getElementById("sitrepSummaryText").textContent = dataset.summary;
+      document.getElementById("sitrepUncertaintyText").textContent = "Catatan: " + dataset.uncertainty;
+
+      // Update Priority List
+      const actionList = document.getElementById("priorityActionList");
+      actionList.innerHTML = "";
+      dataset.priorities.forEach((p, idx) => {
+        const item = document.createElement("div");
+        item.className = `action-item ${idx < 2 ? 'priority-high' : ''}`;
+        item.innerHTML = `
+          <div class="action-header">
+            <span class="action-sector">${p.title}</span>
+            <span class="action-badge ${idx < 2 ? 'badge-high' : 'badge-mid'}">Prioritas ${idx + 1}</span>
+          </div>
+          <p class="action-desc">${p.desc}</p>
+          <div class="action-rec">
+            <span>${p.rec}</span>
+          </div>
+        `;
+        actionList.appendChild(item);
+      });
+
+      // Update Map SVG Elements
+      document.getElementById("layer-water-group").innerHTML = dataset.waterPaths;
+      document.getElementById("base-roads-group").innerHTML = dataset.baseRoads;
+      document.getElementById("layer-roads-group").innerHTML = dataset.cutRoads;
+
+      // Update Houses
+      const houseGroup = document.getElementById("layer-houses-group");
+      houseGroup.innerHTML = "";
+      dataset.houses.forEach(h => {
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("x", h.x);
+        rect.setAttribute("y", h.y);
+        rect.setAttribute("width", h.w);
+        rect.setAttribute("height", h.h);
+        rect.setAttribute("class", `bbox-house ${h.prio ? '' : 'moderate'}`);
+        rect.onclick = () => inspectHouse(h.id, h.prio ? 'Prioritas Kritis' : 'Waspada', h.note, h.contact);
+
+        const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txt.setAttribute("x", h.x + 4);
+        txt.setAttribute("y", h.y + 16);
+        txt.setAttribute("fill", "#FFF");
+        txt.setAttribute("font-size", "11");
+        txt.setAttribute("font-weight", "700");
+        txt.textContent = h.id;
+
+        houseGroup.appendChild(rect);
+        houseGroup.appendChild(txt);
+      });
+
+      // Update legend label
+      document.getElementById("legendPriorityText").textContent = dataset.id === "real_7405" 
+        ? "Rumah Prioritas Evakuasi (3 Terdeteksi)" 
+        : "Rumah Kritis Terisolir (92 Terdeteksi)";
+    }
+
+    function switchDataset(type) {
+      if (type === "real_7405") {
+        renderDashboard(DATASET_REAL_7405);
+      } else {
+        renderDashboard(DATASET_SAMPLE_NOAA);
+      }
+    }
+
     function toggleLayer(layerName) {
       const el = document.getElementById(`layer-${layerName}-group`);
       const cb = document.getElementById(`layer-${layerName}`);
@@ -790,38 +974,37 @@
       }
     }
 
-    function inspectHouse(id, status, detail, sector) {
-      alert(`[DETAIL OBJEK DETEKSI SAM 3.1]\n\nID: ${id}\nSektor: ${sector}\nStatus: ${status}\nKondisi: ${detail}\n\nRekomendasi Aksi: Segera prioritaskan evakuasi warga via tim respon terdekat.`);
+    function inspectHouse(id, status, detail, contact) {
+      alert(`[DETEKSI SAM 3.1 & SITREP SPARK]\n\nID Bangunan: ${id}\nStatus: ${status}\nKontak Air: ${contact}\nKeterangan: ${detail}\n\nRekomendasi: Verifikasi tim respon terdekat sesuai urutan prioritas sitrep.`);
     }
 
     function exportSitrep() {
-      const sitrepData = {
+      const isReal = currentDataset.id === "real_7405";
+      const sitrepExport = {
         project: "SIGAP-Banjir",
-        engine: "Meta SAM 3.1 (Segment Anything) + Muse Spark Reasoning",
+        engine: "Meta SAM 3.1 + Muse Spark (Llama 3.1)",
+        dataset_source: currentDataset.name,
+        is_live_pipeline_artifact: isReal,
         generatedAt: new Date().toISOString(),
-        summary: {
-          buildings_detected: 92,
-          severe_submerged: 14,
-          roads_severed: 2,
-          flood_area_hectares: 14.8
-        },
-        priority_actions: [
-          { sector: "B", priority: 1, action: "Deploy 2 Perahu LCR ke Klaster H-01-H-04" },
-          { sector: "D", priority: 2, action: "Evakuasi darurat radius tanggul primer" }
-        ]
+        summary: currentDataset.summary,
+        uncertainty_note: currentDataset.uncertainty,
+        key_metrics: currentDataset.stats,
+        priority_actions: currentDataset.priorities
       };
-      const blob = new Blob([JSON.stringify(sitrepData, null, 2)], { type: "application/json" });
+
+      const blob = new Blob([JSON.stringify(sitrepExport, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `SIGAP_Banjir_Sitrep_${Date.now()}.json`;
+      a.download = `SIGAP_Banjir_Sitrep_${currentDataset.id}_${Date.now()}.json`;
       a.click();
       URL.revokeObjectURL(url);
     }
 
-    function loadSampleDataset() {
-      alert("Dataset Sampel NOAA / FloodNet terhubung aktif. Silakan pilih titik koordinat penerbangan drone.");
-    }
+    // Initialize with Real Data (FloodNet 7405)
+    document.addEventListener("DOMContentLoaded", () => {
+      renderDashboard(DATASET_REAL_7405);
+    });
   </script>
 </body>
 </html>
