@@ -3,11 +3,15 @@
 **Drone flood imagery in, a rescue-ready situation report out.**
 
 SIGAP-Banjir turns aerial photos of a flooded area into decisions for response
-teams: how many houses are affected, which roads are cut off, where to send
-help first, and a draft situation report a duty officer can act on.
+teams: how many houses are affected, which roads are flagged for access
+checks, where to send help first, and a draft situation report a duty
+officer can act on.
 
 Built for the Meta Global AI Developer Hackathon (Cerebral Valley, 2026),
 theme **Push the Frontier**, Indie track, by Fafa Team.
+
+**Demo video (3 minutes):** https://youtu.be/1RJL2N5fz9g
+(unlisted; mirror: https://drive.google.com/open?id=1NFvC7zuvc_o1ixlAuH4ffG4oHRaIX-N_)
 
 ## How it works
 
@@ -15,11 +19,13 @@ theme **Push the Frontier**, Indie track, by Fafa Team.
    Model API segments one concept per request (`house`, `flood water`,
    `road`, ...) in an aerial image and returns a box and a pixel mask for
    every instance, with confidence scores.
-2. **Measure** — house footprints are intersected with the flood-water mask
-   to count affected homes; road segments overlapped by water are flagged
-   as cut off.
+2. **Measure** — each house footprint is scored by the fraction of its
+   perimeter ring touched by flood water, with permanent water
+   baseline-subtracted using a pre-flood photo so only new inundation
+   counts; road segments overlapped by new water are flagged for
+   ground access checks (never declared closed on imagery alone).
 3. **Decide** — a Muse Spark agent reasons over the measurements and drafts
-   the situation report: affected-house count, cut-off roads, evacuation
+   the situation report: affected-house count, flagged roads, evacuation
    priorities, and a plain-language summary for responders.
 
 ## Status
@@ -111,11 +117,11 @@ Step-by-step beginner tutorial (Bahasa Indonesia):
 
 - [x] Mask decoding via Meta's official parser, contact-based exposure
       metric, and baseline (before-image) subtraction of permanent water
-- [ ] FloodNet subset wired in, scores against its ground-truth labels
+- [x] FloodNet subset wired in, scores against its ground-truth labels
 - [x] Muse Spark situation-report agent (JSON schema + narrative)
-- [ ] Situation dashboard (map overlay + priority panel)
+- [x] Situation dashboard (map overlay + priority panel)
 - [ ] Video segmentation pass on a short aerial clip
-- [ ] 3-minute demo video and submission package
+- [x] 3-minute demo video and submission package
 
 ## License
 

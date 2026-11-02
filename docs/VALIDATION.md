@@ -26,9 +26,11 @@ Evaluasi dijalankan pada **20 citra UAS resolusi tinggi** (4592×3072 dan 4000×
 | **0.01** | **31** | **9** | **178** | **35** | **77.5%** | **14.8%** | **0.249** | **Default Operasional (Pareto Optimum)** |
 | 0.05 | 24 | 6 | 185 | 38 | 80.0% | 11.5% | 0.201 | Konservatif |
 | 0.10 | 9 | 4 | 200 | 40 | 69.2% | 4.3% | 0.081 | Baseline Uji Awal |
-| 0.20 | 1 | 0 | 208 | 41 | 100.0% | 0.5% | 0.010 | Ekstrem (Hanya kontak masif) |
+| 0.20 | 1 | 3 | 208 | 41 | 25.0% | 0.5% | 0.009 | Ekstrem (Hanya kontak masif) |
 
 **Ambang Batas Default**: Ditentukan pada **`threshold = 0.01`** (kontak air terdeteksi ≥ 1% pada ring perimeter bangunan). Pada titik ini dicapai keseimbangan optimal: presisi **77.5%**, recall **14.8%**, dan F1 **0.249**.
+
+*Provenance sweep*: keempat baris sweep direkomputasi dari kontak per-rumah yang tersimpan di `validation/report.json` (`per_image.matches`); header agregat report.json adalah threshold 0.10, dan baris lainnya diturunkan dari data yang sama. Tiga prediksi halusinasi (unmatched) dihitung sebagai FP di semua threshold — mengikuti konvensi itu, baris 0.20 terkoreksi menjadi FP 3 dan presisi 25.0% (bukan 100%).
 
 ---
 
@@ -39,7 +41,7 @@ Dalam evaluasi tingkat objek berbasis IoU (IoU ≥ 0.3 atau *center-in-box*), te
 1. **Bangunan Ground Truth Flooded (209)**:
    - 100% (209 objek) dievaluasi penuh:
      - **9 TP**: Terdeteksi oleh SAM house dan kontak air melebihi threshold baseline (th 0.10) / **31 TP** (th 0.01).
-     - **158 FN (Matched Dry)**: Terdeteksi bangunannya oleh SAM, namun kontak air di bawah threshold.
+     - **158 FN (Matched Dry)**: Terdeteksi bangunannya oleh SAM, namun kontak air di bawah threshold. Angka 158 ini berlaku pada th 0.10 (total FN 200); pada th 0.01 (default operasional) FN matched dry adalah **136** (total FN 178).
      - **42 FN (Missed Detection)**: Bangunan tidak terdeteksi oleh SAM sama sekali.
 2. **Bangunan Ground Truth Dry (71)**:
    - **41 Objek Ter-match SAM**:
@@ -72,3 +74,14 @@ Dalam evaluasi tingkat objek berbasis IoU (IoU ≥ 0.3 atau *center-in-box*), te
 Pipeline SIGAP-Banjir membuktikan keandalan tinggi sebagai sistem penapisan cepat darurat:
 - **Zero failure rate** pada eksekusi Meta Model API (60/60 panggilan sukses tanpa timeout / 429).
 - **Akurasi triase tinggi**: Ketika SIGAP menandai suatu klaster bangunan sebagai prioritas evakuasi, probabilitas kebenarannya mencapai **77.5%**, menjadikannya alat bantu keputusan yang solid bagi petugas tanggap darurat di Situation Room.
+
+---
+
+## 6. Catatan Artefak Sitrep 7405 (3 vs 8 Rumah)
+
+Angka pada dua artefak validasi tampak berbeda dan **bukan** kontradiksi:
+
+- `validation/measurements_7405.json` mencantumkan **8** entri `priority_houses` — semua rumah dengan kontak air terukur (0.0461–0.1807).
+- `validation/sitrep_7405.json` menghitung **3** rumah prioritas — hanya yang kontaknya ≥ 0.10, sesuai konstanta `PRIORITY_CONTACT = 0.10` di `src/sigap/sitrep.py` (yang lolos: 0.1807, 0.1183, 0.1077).
+
+Jadi sitrep mengambil 3 teratas dari 8 rumah berkontak air sebagai prioritas evakuasi; 5 sisanya berkontak di bawah ambang prioritas.
