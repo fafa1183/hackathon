@@ -63,6 +63,29 @@ dashboard consumes — schema and a synthetic measurements fixture:
 [docs/SITREP_SCHEMA.md](docs/SITREP_SCHEMA.md),
 `tests/fixtures/measurements_synthetic.json`.
 
+## Run the full pipeline from a photo pair (one command)
+
+If you have raw photos instead of a measurements file, `olah_foto.py`
+runs the whole chain for you: SAM 3.1 segmentation, water-contact
+measurement with the permanent-water baseline subtracted, and the
+Muse Spark sitrep.
+
+```bash
+export MODEL_API_KEY=<redacted>
+python tools/olah_foto.py \
+  --before foto-sebelum.jpg --after foto-sesudah.jpg \
+  --outdir hasil-foto
+```
+
+The two photos must show the **same location with the same framing**
+(an aerial photo before the flood and one after it, at the same pixel
+size). The BEFORE photo is the baseline: water that was already there
+(rivers, lakes) is subtracted, so only new flood water is counted.
+
+Outputs in `--outdir`: `measurements.json` (the counts),
+`overlay.png` (detected houses drawn on the after photo), and
+`sitrep.json` (the situation report the dashboard consumes).
+
 ## Layout
 
 - `src/sigap/sam_client.py` — Meta Model API client for SAM 3.1
@@ -76,6 +99,8 @@ dashboard consumes — schema and a synthetic measurements fixture:
   above.
 - `tools/run_sitrep.py` — command-line sitrep generator (supports
   `--dry-run` for offline smoke tests).
+- `tools/olah_foto.py` — one-command pipeline from a before/after
+  photo pair to measurements, overlay, and sitrep.
 - `dashboard/` — situation dashboard; consumes the sitrep JSON.
 - `docs/` — data sources, licenses, spike results and the sitrep schema.
 
