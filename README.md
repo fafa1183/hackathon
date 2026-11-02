@@ -86,6 +86,9 @@ Outputs in `--outdir`: `measurements.json` (the counts),
 `overlay.png` (detected houses drawn on the after photo), and
 `sitrep.json` (the situation report the dashboard consumes).
 
+Step-by-step beginner tutorial (Bahasa Indonesia):
+[docs/TUTORIAL.md](docs/TUTORIAL.md).
+
 ## Layout
 
 - `src/sigap/sam_client.py` — Meta Model API client for SAM 3.1
